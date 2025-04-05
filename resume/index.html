@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jennifer Chang - Resume</title>
+    <style>
+        body {
+            font-family: Times New Roman, serif;
+            line-height: 1.5;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+        .contact-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            border-bottom: 1px solid #000;
+            text-transform: uppercase;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .position {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+        .company {
+            font-style: italic;
+        }
+        .location-date {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .location {
+            text-align: right;
+        }
+        ul {
+            margin-top: 5px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .skills-section {
+            margin-top: 10px;
+        }
+        /* Navigation styling */
+        nav {
+            margin-bottom: 30px;
+        }
+        nav ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        nav li {
+            margin-bottom: 5px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../projects/index.html">Projects</a></li>
+            <li><a href="index.html">Contact</a></li>
+            <li><a href="https://github.com/jennifertchang" target="_blank">GitHub</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Jennifer Chang</h1>
+        <div class="contact-info">
+            <span><a href="mailto:jtc006@ucsd.edu">jtc006@ucsd.edu</a> | <a href="https://linkedin.com">LinkedIn</a></span>
+        </div>
+    </header>
+
+    <div class="section">
+        <h2>Education</h2>
+        <div class="position">University of California, San Diego</div>
+        <div class="location-date">
+            <div class="company">Bachelor of Science in Data Science, Minor in Business Economics</div>
+            <div class="location">La Jolla, SD</div>
+        </div>
+        <div class="location-date">
+            <div></div>
+            <div>August 2023 – June 2027</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Experience</h2>
+        
+        <div class="position">Data Science Intern</div>
+        <div class="location-date">
+            <div class="company">IDX Exchange</div>
+            <div class="location">Boise, ID (Remote)</div>
+        </div>
+        <div class="location-date">
+            <div></div>
+            <div>January 2025 – Present</div>
+        </div>
+        <ul>
+            <li>Conduct EDA and data preprocessing on 12 California Real Estate datasets using Python to identify an appropriate machine learning model for predicting property close prices.</li>
+            <li>Design, train, and optimize complex ML models such as decision trees, random forests, and gradient boosting to enhance predictive accuracy</li>
+            <li>Document the end-to-end modeling pipeline, detailing data preprocessing, feature selection, model evaluation, and prediction methodologies for transparency and reproducibility</li>
+            <li>Communicate findings by presenting data analyses and model results to non-technical stakeholders, ensuring clarity and actionable takeaways</li>
+        </ul>
+
+        <div class="position">Data Scientist</div>
+        <div class="location-date">
+            <div class="company">Biokind Analytics for Meals on Wheels</div>
+            <div class="location">La Jolla, SD</div>
+        </div>
+        <div class="location-date">
+            <div></div>
+            <div>July 2024 – January 2025</div>
+        </div>
+        <ul>
+            <li>Implementing large language models (LLMs) to generate personalized letter to clients/donors, helping streamline communication with donors</li>
+            <li>Utilizing multiple basic to advanced prompt engineering to create the LLMs (ie. Few Shot, chain of thought (CoT), retrieval-augmented generation, etc.) to generate responses that fit the context of a charitable, philanthropy organization such as Meals on Wheels</li>
+            <li>Directly contributing to the nonprofit's mission of providing meals to address senior hunger and isolation</li>
+        </ul>
+
+        <div class="position">Data Scientist</div>
+        <div class="location-date">
+            <div class="company">Biokind Analytics for Freshstart Surgical Gifts</div>
+            <div class="location">La Jolla, SD</div>
+        </div>
+        <div class="location-date">
+            <div></div>
+            <div>February 2024 – June 2024</div>
+        </div>
+        <ul>
+            <li>Directly contributed to the nonprofit's mission of providing medical assistance to children with physical deformities by optimizing resource allocation and improving operational processes.</li>
+            <li>Cleaned two datasets with over ten columns and fifty rows and prepped them to be used for data analysis</li>
+            <li>Applied advanced data cleansing, transformation, and visualization techniques to deliver critical insights for Fresh Start Surgical Gifts' annual golf charity event, such as providing visualizations to see the trend in RoR over time</li>
+        </ul>
+
+        <div class="position">Summer Intern</div>
+        <div class="location-date">
+            <div class="company">Google</div>
+            <div class="location">San Francisco, CA</div>
+        </div>
+        <div class="location-date">
+            <div></div>
+            <div>June 2023 – August 2023</div>
+        </div>
+        <ul>
+            <li>Created a functional Google Help Chatbot utilizing machine learning and AI through dialog flow (manually using intents) to train the model to respond to certain inputs</li>
+            <li>Designed UI/UX for the interface of a mock website where I designed the layout, logo, and color scheme</li>
+            <li>Built a stock screener by scraping public data from Yahoo Finance using Python with three peers</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Projects</h2>
+        <div class="position">DataHack T-Race Project | Python, Numpy, Matplotlib, Pandas, VS Code</div>
+        <div class="location-date">
+            <div></div>
+            <div>April 2024</div>
+        </div>
+        <ul>
+            <li>Collaborated on a team of 4 for a data science and dinosaur themed hackathon hosted at UC San Diego</li>
+            <li>Cleaned and performed data analysis on a public dinosaur dataset pulled from Kaggle.com</li>
+            <li>Created a working bar chart racer for the distribution of dinosaur counts per location over time (millions of years ago)</li>
+            <li>Utilized libraries such as pandas, matplotlib, and numpy to perform EDA with corresponding data visualizations</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Technical Skills</h2>
+        <div class="skills-section">
+            <strong>Languages:</strong> Python, Java, Javascript, LaTeX<br>
+            <strong>Frameworks:</strong> JUnit, WordPress<br>
+            <strong>Developer Tools:</strong> Git, Jupyter Notebook, VS Code, Visual Studio, IntelliJ, Sublime Text, Google Cloud Platform<br>
+            <strong>Libraries:</strong> Pandas, NumPy, Matplotlib, Seaborn, Plotly
+        </div>
+    </div>
+</body>
+</html>
