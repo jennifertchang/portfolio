@@ -1,3 +1,10 @@
+body {
+    /* Set line height to 1.5 times the font size
+         and use the OS’s UI font as the website font
+       */
+    font: 100%/1.5 system-ui;
+  }
+
 /* Style the navigation menu */
 nav ul {
     list-style-type: disc;  /* Keeps bullet points */
@@ -16,3 +23,4 @@ nav ul li a {
 nav ul li a:hover {
     color: blue;
 }
+
