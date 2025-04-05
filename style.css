@@ -1,7 +1,18 @@
-body {
-    /* Set line height to 1.5 times the font size
-         and use the OS’s UI font as the website font
-       */
-    font: 100%/1.5 system-ui;
-  }
-  
+/* Style the navigation menu */
+nav ul {
+    list-style-type: disc;  /* Keeps bullet points */
+    padding-left: 20px;     /* Adds spacing for bullets */
+}
+
+/* Style the links */
+nav ul li a {
+    text-decoration: none;  /* Removes underline */
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+/* Change link color when hovered */
+nav ul li a:hover {
+    color: blue;
+}
