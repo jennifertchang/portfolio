@@ -9,14 +9,33 @@
 
     <nav>
         <ul>
-            <li><a href="../index.html">Home</a></li> <!-- Link to the Home page -->
-            <li><a href="../projects/index.html">Projects</a></li> <!-- Link to the Projects page -->
-            <li><a href="index.html">Contact</a></li> <!-- This page, so it's already correct -->
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../projects/index.html">Projects</a></li>
+            <li><a href="index.html">Contact</a></li>
             <li><a href="https://github.com/jennifertchang" target="_blank">GitHub</a></li>
         </ul>
     </nav>
 
     <h1>Contact</h1>
+
+    <!-- Contact Form -->
+    <form action="Send email to: jtc006@ucsd.edu" method="POST" enctype="text/plain">
+        <div>
+            <label for="email">Your Email Address:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+        </div>
+        <div>
+            <label for="body">Message:</label>
+            <textarea id="body" name="body" rows="5" required></textarea>
+        </div>
+        <div>
+            <button type="submit">Send Message</button>
+        </div>
+    </form>
 
 </body>
 </html>
