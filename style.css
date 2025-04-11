@@ -1,30 +1,36 @@
-body {
-    /* Set line height to 1.5 times the font size
-         and use the OS’s UI font as the website font
-       */
-    font: 100%/1.5 system-ui;
-    max-width: 100ch;
-    margin-inline: auto;
-    padding: 1rem;
-
-  }
-
-/* Style the navigation menu */
-nav ul {
-    list-style-type: disc;  /* Keeps bullet points */
-    padding-left: 20px;     /* Adds spacing for bullets */
+/* Step 2.1: Remove <ul> and <li> layout influence */
+nav ul,
+nav ul li {
+    display: contents;
 }
 
-/* Style the links */
-nav ul li a {
-    text-decoration: none;  /* Removes underline */
+/* Step 2.2: Flexbox layout for the navigation bar */
+nav {
+    display: flex;
+    gap: 1rem;                  /* Spacing between items */
+    margin-bottom: 2rem;        /* Space below nav */
+    flex-wrap: wrap;            /* Allow wrapping on small screens */
+}
+
+/* Make all nav links flex items and equally sized */
+nav a {
+    flex: 1;
+    text-decoration: none;
     font-size: 18px;
     font-weight: bold;
     color: black;
+    text-align: center;         /* Optional: centers text in nav items */
+    padding: 0.5rem;
+    border-radius: 6px;
 }
 
-/* Change link color when hovered */
-nav ul li a:hover {
+/* Highlight current page */
+nav a.current {
+    background-color: lightgray;
+}
+
+/* Hover effect */
+nav a:hover {
     color: blue;
+    background-color: #f0f0f0;
 }
-
