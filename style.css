@@ -1,46 +1,36 @@
-/* Define accent color at the root level */
-html {
+/* Global accent color (sage green) */
+:root {
     --color-accent: oklch(75% 0.12 150); /* light sage green */
     accent-color: var(--color-accent);
-}
-
-/* Step 2.1: Remove <ul> and <li> layout influence */
-nav ul,
-nav ul li {
-    display: contents;
-}
-
-/* Step 2.2: Flexbox layout for the navigation bar */
-nav {
+  }
+  
+  nav {
     display: flex;
-    gap: 1rem;                  /* Spacing between items */
-    margin-bottom: 2rem;        /* Space below nav */
-    flex-wrap: wrap;            /* Allow wrapping on small screens */
-    border-bottom: 1px solid oklch(80% 3% 200); /* subtle cool gray border */
-}
-
-/* Make all nav links flex items and equally sized */
-nav a {
-    flex: 1;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid oklch(85% 0.02 150); /* subtle border */
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+  
+  nav a {
     text-decoration: none;
+    color: inherit;
     font-size: 18px;
     font-weight: bold;
-    color: inherit;
-    text-align: center;         
+    text-align: center;
     padding: 0.5rem;
-    border-bottom: 0 solid transparent; /* Prevent layout shift */
+    border-bottom: 0.4rem solid transparent;
     transition: all 0.2s ease;
-}
-
-/* Highlight current page */
-nav a.current {
-    border-bottom: 0.4em solid var(--color-accent);
-    padding-bottom: 0.1em; /* Adjust for extra border thickness */
-}
-
-/* Hover effect */
-nav a:hover {
-    color: var(--color-accent);
-    background-color: #f0f0f0;
-    border-bottom: 0.4em solid var(--color-accent);
-}
+  }
+  
+  nav a.current {
+    border-bottom: 0.4rem solid var(--color-accent);
+  }
+  
+  nav a:hover {
+    background-color: oklch(95% 0.05 150); /* soft sage hover */
+    border-bottom: 0.4rem solid var(--color-accent);
+  }
+  
