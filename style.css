@@ -1,3 +1,9 @@
+/* Define accent color at the root level */
+html {
+    --color-accent: oklch(75% 0.12 150); /* light sage green */
+    accent-color: var(--color-accent);
+}
+
 /* Step 2.1: Remove <ul> and <li> layout influence */
 nav ul,
 nav ul li {
@@ -10,6 +16,7 @@ nav {
     gap: 1rem;                  /* Spacing between items */
     margin-bottom: 2rem;        /* Space below nav */
     flex-wrap: wrap;            /* Allow wrapping on small screens */
+    border-bottom: 1px solid oklch(80% 3% 200); /* subtle cool gray border */
 }
 
 /* Make all nav links flex items and equally sized */
@@ -18,19 +25,22 @@ nav a {
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
-    color: black;
-    text-align: center;         /* Optional: centers text in nav items */
+    color: inherit;
+    text-align: center;         
     padding: 0.5rem;
-    border-radius: 6px;
+    border-bottom: 0 solid transparent; /* Prevent layout shift */
+    transition: all 0.2s ease;
 }
 
 /* Highlight current page */
 nav a.current {
-    background-color: lightgray;
+    border-bottom: 0.4em solid var(--color-accent);
+    padding-bottom: 0.1em; /* Adjust for extra border thickness */
 }
 
 /* Hover effect */
 nav a:hover {
-    color: blue;
+    color: var(--color-accent);
     background-color: #f0f0f0;
+    border-bottom: 0.4em solid var(--color-accent);
 }
