@@ -1,20 +1,33 @@
-/* Global accent color (sage green) */
-:root {
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Global accent color (sage green) */
+  :root {
     --color-accent: oklch(75% 0.12 150); /* light sage green */
+    --color-hover: oklch(95% 0.05 150); /* soft sage hover */
+    --color-border: oklch(85% 0.02 150); /* subtle border */
     accent-color: var(--color-accent);
   }
   
+  /* Navigation styling */
   nav {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    border-bottom: 1px solid oklch(85% 0.02 150); /* subtle border */
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.5rem;
     margin-bottom: 2rem;
     gap: 1rem;
   }
   
-  nav a {
+  nav a, nav ul li a {
     text-decoration: none;
     color: inherit;
     font-size: 18px;
@@ -25,12 +38,67 @@
     transition: all 0.2s ease;
   }
   
-  nav a.current {
+  nav a.current, nav ul li a.current {
     border-bottom: 0.4rem solid var(--color-accent);
   }
   
-  nav a:hover {
-    background-color: oklch(95% 0.05 150); /* soft sage hover */
+  nav a:hover, nav ul li a:hover {
+    background-color: var(--color-hover);
     border-bottom: 0.4rem solid var(--color-accent);
   }
   
+  /* For pages that use <ul> in navigation */
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  nav ul li {
+    display: inline-block;
+  }
+  
+  /* Basic content styling */
+  h1 {
+    margin-top: 2rem;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Form styling */
+  form div {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: var(--color-accent);
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: oklch(70% 0.15 150);
+  }
