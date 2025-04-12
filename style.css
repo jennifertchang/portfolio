@@ -18,6 +18,17 @@ body {
     accent-color: var(--color-accent);
   }
   
+  /* added in style.css to apply heading styles globally for better information hierarchy and heading styling */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1; /* Smaller leading for headings */
+    text-wrap: balance; /* Prevent uneven lines */
+  }
+  
+  h1 {
+    font-size: 400%; /* Make h1 significantly larger */
+    margin-top: 2rem;
+  }
+
   /* Navigation styling using Flexbox as instructed */
   nav {
     display: flex;
