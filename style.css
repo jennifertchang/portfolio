@@ -10,7 +10,7 @@ body {
   
   /* Define custom accent color property on :root (or html) as instructed */
   :root {
-    --color-accent: oklch(65% 50% 0);
+    --color-accent: oklch(75% 0.12 150);
   }
   
   /* Apply accent color to html element as instructed */
