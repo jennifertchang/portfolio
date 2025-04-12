@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jennifer Chang - Resume</title>
+    <link rel="stylesheet" href="../style.css">
     <style>
+        /* Resume-specific styling that won't conflict with the navigation */
         body {
             font-family: Times New Roman, serif;
             line-height: 1.5;
-            margin: 0 auto;
             max-width: 800px;
-            padding: 20px;
+            margin: 0 auto;
         }
         h1 {
             text-align: center;
@@ -20,13 +21,6 @@
         .contact-info {
             text-align: center;
             margin-bottom: 20px;
-        }
-        h2 {
-            border-bottom: 1px solid #000;
-            text-transform: uppercase;
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 18px;
         }
         .position {
             font-weight: bold;
@@ -43,35 +37,11 @@
         .location {
             text-align: right;
         }
-        ul {
-            margin-top: 5px;
-        }
         .section {
             margin-bottom: 20px;
         }
         .skills-section {
             margin-top: 10px;
-        }
-        /* Navigation styling */
-        nav {
-            margin-bottom: 30px;
-        }
-        nav ul {
-            list-style-type: disc;
-            padding-left: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        nav li {
-            margin-bottom: 5px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #0066cc;
-        }
-        nav a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -79,8 +49,8 @@
     <nav>
         <a href="../index.html">Home</a>
         <a href="../projects/index.html">Projects</a>
+        <a href="index.html" class="current">CV</a>
         <a href="../contact/index.html">Contact</a>
-        <a href="index.html">Resume</a>
         <a href="https://github.com/jennifertchang" target="_blank">GitHub</a>
     </nav>
     
