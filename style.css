@@ -8,47 +8,48 @@ body {
     margin: 0 auto;
   }
   
-  /* Define custom accent color property */
+  /* Define custom accent color property on :root (or html) as instructed */
   :root {
     --color-accent: oklch(65% 50% 0);
   }
   
-  /* Apply accent color to all elements that need it */
+  /* Apply accent color to html element as instructed */
   html {
     accent-color: var(--color-accent);
   }
   
-  /* Navigation styling */
+  /* Navigation styling using Flexbox as instructed */
   nav {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid oklch(80% 3% 200); /* Cool gray border as instructed */
     margin-bottom: 2rem;
     width: 100%;
   }
   
   nav a {
-    text-decoration: none;
-    color: inherit;
+    text-decoration: none; /* Remove underline as instructed */
+    color: inherit; /* Remove default link color as instructed */
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
-    padding: 0.75rem 0;
-    border-bottom: 4px solid transparent;
-    flex: 1;
+    text-align: center; /* Center text as instructed */
+    padding: 0.5em; /* Padding as instructed */
+    border-bottom: 0.4em solid transparent; /* Make space for the border on hover */
+    flex: 1; /* Make links take equal space as instructed */
     transition: all 0.2s ease;
   }
   
   /* Current page styling */
   nav a.current {
-    border-bottom: 4px solid #ccc;
-    background-color: #f0f0f0;
+    border-bottom: 0.4em solid oklch(80% 3% 200); /* Same cool gray as nav border */
+    padding-bottom: calc(0.5em - 0.4em); /* Reduce padding to compensate for border */
   }
   
-  /* Hover styling using the accent color */
+  /* Hover styling using the accent color as instructed */
   nav a:hover {
-    background-color: oklch(from var(--color-accent) 95% 5% h);
-    border-bottom: 4px solid var(--color-accent);
+    background-color: oklch(from var(--color-accent) 95% 5% h); /* Light color with same hue */
+    border-bottom: 0.4em solid var(--color-accent); /* Accent color border */
+    padding-bottom: calc(0.5em - 0.4em); /* Reduce padding to compensate for border */
   }
   
   /* Form styling */
