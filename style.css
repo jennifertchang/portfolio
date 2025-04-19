@@ -2,6 +2,15 @@
 :root {
   color-scheme: light dark;
   --color-accent: oklch(75% 0.12 150);
+  --border-color: oklch(50% 10% 200 / 40%);
+}
+
+
+/* Media query for dark mode that defines variables at the root level */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-color: oklch(80% 25% 200 / 70%); /* Much brighter in dark mode */
+  }
 }
 
 /* Apply accent color to html element */
@@ -35,7 +44,7 @@ select {
   font-family: inherit;
   padding: 0.25rem;
   border-radius: 4px;
-  border: 1px solid var(--border-color, oklch(50% 10% 200 / 40%));
+  border: 1px solid var(--border-color);
 }
 
 /* Heading styles */
@@ -59,10 +68,10 @@ h2 {
 
 /* Navigation styling */
 nav {
-  --border-color: oklch(50% 10% 200 / 40%);
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
+  border-bottom-color: var(--border-color);
   margin-bottom: 2rem;
   width: 100%;
 }
@@ -79,6 +88,7 @@ nav a {
   transition: all 0.2s ease;
 }
 
+/* Use the variable for the current page indicator */
 nav a.current {
   border-bottom-color: var(--border-color);
   padding-bottom: calc(0.5em - 0.4em);
@@ -89,13 +99,6 @@ nav a:hover {
   background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
   border-bottom: 0.4em solid var(--color-accent);
   padding-bottom: calc(0.5em - 0.4em);
-}
-
-/* For dark mode, adjust the border color variable */
-@media (prefers-color-scheme: dark) {
-  nav {
-    --border-color: oklch(70% 15% 200 / 60%);
-  }
 }
 
 /* Form styling */
