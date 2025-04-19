@@ -1,6 +1,22 @@
 /* Add support for dark mode */
 :root {
   color-scheme: light dark;
+  --color-accent: oklch(75% 0.12 150);
+}
+
+/* Apply accent color to html element */
+html {
+  accent-color: var(--color-accent);
+}
+
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Style the theme switcher */
@@ -22,162 +38,129 @@ select {
   border: 1px solid var(--border-color, oklch(50% 10% 200 / 40%));
 }
 
-/* Adjust your existing border styles */
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 400%;
+  margin-top: 2rem;
+}
+
+h2 {
+  border-bottom: 1px solid #000;
+  text-transform: uppercase;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Navigation styling */
 nav {
   --border-color: oklch(50% 10% 200 / 40%);
-  /* Keep your existing nav styles */
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
-/* Update any border-bottom-color properties to use the variable */
+nav a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5em;
+  border-bottom: 0.4em solid transparent;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
 nav a.current {
   border-bottom-color: var(--border-color);
+  padding-bottom: calc(0.5em - 0.4em);
 }
 
-/* If you have hover background styles, update them to: */
+/* Hover effect using color-mix */
 nav a:hover {
   background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+  border-bottom: 0.4em solid var(--color-accent);
+  padding-bottom: calc(0.5em - 0.4em);
 }
 
-/* Global styles */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Define custom accent color property on :root (or html) as instructed */
-  :root {
-    --color-accent: oklch(75% 0.12 150);
-  }
-  
-  /* Apply accent color to html element as instructed */
-  html {
-    accent-color: var(--color-accent);
-  }
-  
-  /* added in style.css to apply heading styles globally for better information hierarchy and heading styling */
-  h1, h2, h3, h4, h5, h6 {
-    line-height: 1.1; /* Smaller leading for headings */
-    text-wrap: balance; /* Prevent uneven lines */
-  }
-  
-  h1 {
-    font-size: 400%; /* Make h1 significantly larger */
-    margin-top: 2rem;
-  }
-
-  /* Navigation styling using Flexbox as instructed */
+/* For dark mode, adjust the border color variable */
+@media (prefers-color-scheme: dark) {
   nav {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid oklch(80% 3% 200); /* Cool gray border as instructed */
-    margin-bottom: 2rem;
-    width: 100%;
+    --border-color: oklch(70% 15% 200 / 60%);
   }
-  
-  nav a {
-    text-decoration: none; /* Remove underline as instructed */
-    color: inherit; /* Remove default link color as instructed */
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center; /* Center text as instructed */
-    padding: 0.5em; /* Padding as instructed */
-    border-bottom: 0.4em solid transparent; /* Make space for the border on hover */
-    flex: 1; /* Make links take equal space as instructed */
-    transition: all 0.2s ease;
-  }
-  
-  /* Current page styling */
-  nav a.current {
-    border-bottom: 0.4em solid oklch(80% 3% 200); /* Same cool gray as nav border */
-    padding-bottom: calc(0.5em - 0.4em); /* Reduce padding to compensate for border */
-  }
-  
-  /* Hover styling using the accent color as instructed */
-  nav a:hover {
-    background-color: oklch(from var(--color-accent) 95% 5% h); /* Light color with same hue */
-    border-bottom: 0.4em solid var(--color-accent); /* Accent color border */
-    padding-bottom: calc(0.5em - 0.4em); /* Reduce padding to compensate for border */
-  }
-  
-  /* Form styling */
-  form div {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  input, textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  button {
-    background-color: var(--color-accent);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  button:hover {
-    opacity: 0.9;
-  }
-  
-  /* Resume styling */
-  .contact-info {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  h2 {
-    border-bottom: 1px solid #000;
-    text-transform: uppercase;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 18px;
-  }
-  
-  .position {
-    font-weight: bold;
-    margin-bottom: 0;
-  }
-  
-  .company {
-    font-style: italic;
-  }
-  
-  .location-date {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
-  
-  .section {
-    margin-bottom: 20px;
-  }
-  
-  .skills-section {
-    margin-top: 10px;
-  }
-  
-  /* Basic content styling */
-  h1 {
-    margin-top: 2rem;
-  }
-  
-  img {
-    max-width: 100%;
-    height: auto;
-  }
+}
+
+/* Form styling */
+form div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: var(--color-accent);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Resume styling */
+.contact-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.position {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.company {
+  font-style: italic;
+}
+
+.location-date {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.skills-section {
+  margin-top: 10px;
+}
+
+/* Basic content styling */
+img {
+  max-width: 100%;
+  height: auto;
+}
