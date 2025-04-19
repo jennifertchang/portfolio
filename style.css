@@ -1,3 +1,43 @@
+/* Add support for dark mode */
+:root {
+  color-scheme: light dark;
+}
+
+/* Style the theme switcher */
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Style the select element */
+select {
+  font-family: inherit;
+  padding: 0.25rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color, oklch(50% 10% 200 / 40%));
+}
+
+/* Adjust your existing border styles */
+nav {
+  --border-color: oklch(50% 10% 200 / 40%);
+  /* Keep your existing nav styles */
+}
+
+/* Update any border-bottom-color properties to use the variable */
+nav a.current {
+  border-bottom-color: var(--border-color);
+}
+
+/* If you have hover background styles, update them to: */
+nav a:hover {
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+}
+
 /* Global styles */
 body {
     font-family: Arial, sans-serif;
