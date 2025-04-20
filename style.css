@@ -8,7 +8,7 @@
 /* Media query for dark mode that defines variables at the root level */
 @media (prefers-color-scheme: dark) {
   :root {
-    --border-color: oklch(80% 25% 200 / 70%); /* Much brighter in dark mode */
+    --border-color: oklch(80% 25% 200 / 90%); /* Much brighter in dark mode */
   }
 }
 
