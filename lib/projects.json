@@ -1,0 +1,74 @@
+[
+    {
+        "title": "Recipe Time Estimator",
+        "year": "2025",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "This project aimed to predict the actual cooking time of a recipe, in minutes, based on key recipe attributes such as the number of steps, number of ingredients, and descriptive tags. I worked with a merged dataset of over 230,000 entries from RAW_recipes.csv and interactions.csv, combining recipe details with user ratings and reviews. After extensive data cleaning—including handling missing values, removing duplicates, and correcting data types—I engineered relevant features and performed exploratory data analysis to identify trends and potential predictors of cooking time. This project allowed me to apply regression modeling techniques to a real-world problem, while exploring how recipe complexity and metadata can be used to enhance the accuracy of time estimates for online recipes."
+    },
+    {
+        "title": "California Wildfire Analysis",
+        "year": "2025",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "This project explores whether rising average temperatures—driven by climate change—are linked to more severe wildfires, measured by acres burned or damaged, across California counties. I analyzed the California Wildfire Damage Dataset (2014–Feb 2025) to investigate these patterns, inspired by my personal concern for how global warming is intensifying natural disasters. Through this analysis, I aimed to better understand the real-world impacts of climate change in my home state and provide insights that could help inform future prevention and recovery strategies."
+    },
+    {
+        "title": "T-Race",
+        "year": "2024",
+        "image": "../images/t-race.png",
+        "description": "This project visualizes dinosaur data through both static and dynamic visualizations. We began by creating histograms to display the distribution of dinosaur lengths across six major geological eras. Building on this, we developed a bar chart race animation to illustrate how dinosaur fossil counts varied by location over millions of years. The project involved extensive data cleaning, exploratory data analysis, and the use of the bar_chart_race Python package to enhance temporal data storytelling through engaging visualizations."
+    },
+    {
+        "title": "Sint qui mollitia necessitatibus.",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Sequi debitis vitae laudantium cupiditate aspernatur maxime voluptate assumenda magni, quaerat voluptatibus quia ullam labore eos voluptatem quae magnam, excepturi cum nemo perferendis animi facilis sapiente adipisci. Omnis, amet cupiditate?"
+    },
+    {
+        "title": "Eaque incidunt repellat laboriosam.",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Eaque voluptatibus consectetur, voluptates quia impedit aliquid eligendi praesentium, facere nam fuga et quo odit optio sunt temporibus necessitatibus debitis, dicta deleniti atque a velit. Soluta reiciendis facilis animi unde."
+    },
+    {
+        "title": "Nostrum quasi illo adipisci.",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Deserunt explicabo omnis voluptates est laboriosam minus numquam sapiente aspernatur aperiam maxime nisi saepe culpa exercitationem consequatur, autem beatae debitis quod velit sit quibusdam magnam animi inventore distinctio! Atque, est."
+    },
+    {
+        "title": "Eos natus alias earum!",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Rerum incidunt maiores officia fugiat ipsam tenetur laborum aut autem? Iusto accusamus beatae error veritatis tempore atque id, corporis, enim commodi, officiis excepturi dolores distinctio necessitatibus aut placeat veniam maiores."
+    },
+    {
+        "title": "Perferendis cum iste placeat!",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Eaque optio aspernatur ad quasi laborum rerum magnam mollitia architecto ullam harum, aut eveniet, nihil accusamus illum repellendus quis asperiores reprehenderit dolore? Quos praesentium ratione expedita dolores laboriosam facere a."
+    },
+    {
+        "title": "Delectus reiciendis a qui.",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Illum expedita reiciendis, perspiciatis numquam distinctio magnam sequi laborum repudiandae et ex temporibus id tenetur, minus iste nesciunt. Cupiditate tempore officia numquam quaerat voluptatibus, sed porro quis dicta rerum hic!"
+    },
+    {
+        "title": "Ipsum architecto numquam atque?",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Sit incidunt suscipit blanditiis. Illo necessitatibus saepe libero blanditiis beatae doloribus, eveniet quisquam iusto ea quaerat rem illum nisi consequatur voluptatum? Nesciunt aperiam autem esse. Ad laudantium quis totam consequuntur."
+    },
+    {
+        "title": "Sint nam earum natus!",
+        "year": "2024",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Quo dolores impedit deserunt soluta temporibus dicta voluptatibus, dolore tenetur, officiis quas necessitatibus maiores nam fuga odit laboriosam, molestias earum neque ex nulla. Ipsa deserunt minus blanditiis quis saepe possimus."
+    },
+    {
+        "title": "Quia a aliquam provident.",
+        "year": "2023",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Minima tempore fugiat provident cupiditate rem sint totam fugit perferendis deserunt! Quia iusto eos similique voluptate optio officiis mollitia consequatur fuga, eius ex minima quae, ipsam maxime expedita, quis ipsa."
+    }
+]
