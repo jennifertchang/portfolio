@@ -173,6 +173,7 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
         // Define the content dynamically with fallbacks for missing data
         article.innerHTML = `
           <${headingLevel}>${project.title}</${headingLevel}>
+          <p class="project-year">${project.year}</p>
           <img src="${project.image || '#'}" alt="${project.title}">
           <p>${project.description || 'No description available.'}</p>
         `;
@@ -187,10 +188,11 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     
     // Define the content dynamically
     article.innerHTML = `
-      <${headingLevel}>${projects.title}</${headingLevel}>
+      <${headingLevel}>${projects.title} <span class="project-year" style="font-style: italic;">(${projects.year})</span></${headingLevel}>
       <img src="${projects.image || '#'}" alt="${projects.title}">
       <p>${projects.description || 'No description available.'}</p>
     `;
+
 
     // Append the <article> element to the provided containerElement
     containerElement.appendChild(article);
