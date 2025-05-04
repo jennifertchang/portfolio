@@ -21,6 +21,9 @@ if (projectsTitle && projects) {
 // Track selected index for filtering
 let selectedIndex = -1;
 
+// Track selected year value for persistence
+let selectedYear = '';
+
 // Function to render projects (handles both array and single object)
 function renderFilteredProjects(projectsToRender) {
   if (Array.isArray(projectsToRender)) {
@@ -40,6 +43,30 @@ function renderFilteredProjects(projectsToRender) {
     // If it's a single project object, render it directly
     renderProjects(projectsToRender, projectsContainer, 'h2');
   }
+}
+
+// Apply filtering based on current state (selected year and search query)
+function applyFilters() {
+  let filteredProjects = projects;
+  
+  // Apply year filter if active
+  if (selectedIndex !== -1 && selectedYear) {
+    filteredProjects = filteredProjects.filter(project => project.year === selectedYear);
+  }
+  
+  // Apply search filter if there's a query
+  if (query) {
+    filteredProjects = filteredProjects.filter((project) => {
+      let values = Object.values(project).join('\n').toLowerCase();
+      return values.includes(query.toLowerCase());
+    });
+  }
+  
+  // Render the filtered projects
+  renderFilteredProjects(filteredProjects);
+  
+  // Update the pie chart with filtered data, but maintain the selection
+  renderPieChart(filteredProjects);
 }
 
 // Refactor all plotting into one function
@@ -68,15 +95,33 @@ function renderPieChart(projectsGiven) {
   // Use the same color scale
   let colors = d3.scaleOrdinal(d3.schemeTableau10);
   
+  // Find the index of the previously selected year in the new data
+  if (selectedYear && selectedIndex !== -1) {
+    const newSelectedIndex = newData.findIndex(d => d.label === selectedYear);
+    // Update selectedIndex if the year still exists in the filtered data
+    selectedIndex = newSelectedIndex !== -1 ? newSelectedIndex : -1;
+    // If the selected year is no longer in the data, clear the selection
+    if (newSelectedIndex === -1) {
+      selectedYear = '';
+    }
+  }
+  
   // Create the pie chart segments with click events
   newArcs.forEach((arc, index) => {
     newSVG
       .append('path')
       .attr('d', arc)
       .attr('fill', colors(index))
+      .attr('class', newData[index].label === selectedYear ? 'selected' : '')
       .on('click', () => {
         // Toggle selection - if already selected, deselect it
-        selectedIndex = selectedIndex === index ? -1 : index;
+        if (selectedYear === newData[index].label) {
+          selectedIndex = -1;
+          selectedYear = '';
+        } else {
+          selectedIndex = index;
+          selectedYear = newData[index].label;
+        }
         
         // Update class on all pie segments
         newSVG
@@ -88,32 +133,8 @@ function renderPieChart(projectsGiven) {
           .selectAll('li')
           .attr('class', (_, idx) => idx === selectedIndex ? 'selected' : '');
         
-        // Filter projects based on selection
-        if (selectedIndex === -1) {
-          // No filter active, show all projects (filtered by search query if any)
-          let filteredProjects = projects;
-          if (query) {
-            filteredProjects = projects.filter((project) => {
-              let values = Object.values(project).join('\n').toLowerCase();
-              return values.includes(query.toLowerCase());
-            });
-          }
-          renderFilteredProjects(filteredProjects);
-        } else {
-          // Filter by selected year
-          const selectedYear = newData[selectedIndex].label;
-          let filteredProjects = projects.filter(project => project.year === selectedYear);
-          
-          // Also apply search query if exists
-          if (query) {
-            filteredProjects = filteredProjects.filter((project) => {
-              let values = Object.values(project).join('\n').toLowerCase();
-              return values.includes(query.toLowerCase());
-            });
-          }
-          
-          renderFilteredProjects(filteredProjects);
-        }
+        // Apply filters based on current state
+        applyFilters();
       });
   });
   
@@ -122,11 +143,17 @@ function renderPieChart(projectsGiven) {
     legend
       .append('li')
       .attr('style', `--color:${colors(idx)}`)
-      .attr('class', idx === selectedIndex ? 'selected' : '')
+      .attr('class', d.label === selectedYear ? 'selected' : '')
       .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`)
       .on('click', () => {
         // Mirror the same click behavior as the pie segments
-        selectedIndex = selectedIndex === idx ? -1 : idx;
+        if (selectedYear === d.label) {
+          selectedIndex = -1;
+          selectedYear = '';
+        } else {
+          selectedIndex = idx;
+          selectedYear = d.label;
+        }
         
         // Update class on all pie segments
         newSVG
@@ -138,32 +165,8 @@ function renderPieChart(projectsGiven) {
           .selectAll('li')
           .attr('class', (_, i) => i === selectedIndex ? 'selected' : '');
         
-        // Filter projects based on selection (same logic as above)
-        if (selectedIndex === -1) {
-          // No filter active, show all projects (filtered by search query if any)
-          let filteredProjects = projects;
-          if (query) {
-            filteredProjects = projects.filter((project) => {
-              let values = Object.values(project).join('\n').toLowerCase();
-              return values.includes(query.toLowerCase());
-            });
-          }
-          renderFilteredProjects(filteredProjects);
-        } else {
-          // Filter by selected year
-          const selectedYear = newData[selectedIndex].label;
-          let filteredProjects = projects.filter(project => project.year === selectedYear);
-          
-          // Also apply search query if exists
-          if (query) {
-            filteredProjects = filteredProjects.filter((project) => {
-              let values = Object.values(project).join('\n').toLowerCase();
-              return values.includes(query.toLowerCase());
-            });
-          }
-          
-          renderFilteredProjects(filteredProjects);
-        }
+        // Apply filters based on current state
+        applyFilters();
       });
   });
 }
@@ -184,33 +187,6 @@ searchInput.addEventListener('change', (event) => {
   // update query value
   query = event.target.value;
   
-  // Filter projects based on current state
-  let filteredProjects;
-  
-  if (selectedIndex === -1) {
-    // No year filter, just search
-    filteredProjects = projects.filter((project) => {
-      let values = Object.values(project).join('\n').toLowerCase();
-      return values.includes(query.toLowerCase());
-    });
-  } else {
-    // Filter by both year and search query
-    // First, get the current selected year from the legend
-    const legend = d3.select('.legend');
-    const legendItems = legend.selectAll('li');
-    const selectedYear = legendItems.nodes()[selectedIndex].textContent.split(' ')[0];
-    
-    // Then filter by both year and search query
-    filteredProjects = projects.filter((project) => {
-      const matchesYear = project.year === selectedYear;
-      const values = Object.values(project).join('\n').toLowerCase();
-      const matchesQuery = values.includes(query.toLowerCase());
-      return matchesYear && matchesQuery;
-    });
-  }
-  
-  // render filtered projects
-  renderFilteredProjects(filteredProjects);
-  // re-render legends and pie chart when event triggers
-  renderPieChart(filteredProjects);
+  // Apply filters based on current state
+  applyFilters();
 });
