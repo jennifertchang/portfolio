@@ -166,3 +166,98 @@ img {
   height: auto;
 }
 
+/* Modify the existing pie chart CSS */
+#projects-pie-plot {
+  width: 50%; /* Take up around half the container */
+  max-width: 300px; /* Maximum size */
+  min-width: 120px; /* Minimum size when screen is small */
+  height: auto;
+  overflow: visible;
+  flex-shrink: 1; /* Allow the chart to shrink but not below min-width */
+}
+
+/* Style for pie chart interactions */
+#projects-pie-plot path {
+  cursor: pointer;
+  transition: 300ms;
+}
+
+#projects-pie-plot:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+/* Style for selected elements */
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+}
+
+/* Legend */
+.legend {
+  flex: 1;
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  max-width: 45%;
+  min-width: 120px;
+  
+  /* Default layout for small screens - vertical list */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: clamp(12px, 2vw, 14px); /* Responsive font size */
+  cursor: pointer; /* Add cursor pointer to legend items */
+}
+
+.legend .swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend em {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.chart-container {
+  display: flex;
+  align-items: center; /* Change from flex-start to center */
+  gap: 1.5em;
+  margin-bottom: 2em;
+  max-width: 100%;
+  flex-wrap: nowrap;
+}
+
+/* Medium screens - switch to 2 columns */
+@media (min-width: 600px) {
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 12px;
+  }
+}
+
+/* Larger screens - switch to 3 columns */
+@media (min-width: 900px) {
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 60%;
+  }
+}

@@ -6,6 +6,7 @@
     <title>My Projects</title>
     <link rel="stylesheet" href="../style.css">
     <script type="module" src="../global.js"></script>
+
     <style>
         .projects{
             display: grid;
@@ -41,8 +42,26 @@
         <a href="../contact/index.html">Contact</a>
         <a href="https://github.com/jennifertchang" target="_blank">GitHub</a>
     </nav> -->
-
     <h1 class="projects-title"></h1>
+
+    <!-- Circle as a <path> element -->
+    <div class="chart-container">
+        <svg id="projects-pie-plot" viewBox="-50 -50 100 100">
+            <!-- <path d="M -50 0 A 50 50 0 0 1 50 0 A 50 50 0 0 1 -50 0" fill="red" /> -->
+        </svg>
+        <!-- Legend -->
+        <ul class = 'legend'></ul>
+    </div>
+    
+    <!-- Search input -->
+    <input
+      class="searchBar"
+      type="search"
+      aria-label="Search projects"
+      placeholder="🔍 Search projects…"
+      style="margin-bottom: 2em;"
+    />
+
     <!-- <h2>Latest Projects</h2> -->
     <div class="projects">
         <!-- Dynamically added content will appear here -->
