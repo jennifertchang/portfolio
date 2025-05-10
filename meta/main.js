@@ -1,5 +1,9 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
+// Declaring global variables and update these values inside renderScatterPlot
+let xScale;
+let yScale;
+
 // Single loadData function with row conversion
 async function loadData() {
     try {
@@ -12,7 +16,7 @@ async function loadData() {
             datetime: new Date(row.datetime),
         }));
         
-        console.log('Loaded data:', data);
+        // console.log('Loaded data:', data);
         return data;
     } catch (error) {
         console.error('Error loading data:', error);
@@ -144,13 +148,13 @@ function renderScatterPlot(data, commits) {
         .attr('viewBox', `0 0 ${width} ${height}`)
         .style('overflow', 'visible');
 
-    const xScale = d3
+    xScale = d3
         .scaleTime()
         .domain(d3.extent(commits, (d) => d.datetime))
         .range([0, width])
         .nice();
       
-    const yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
+    yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
 
     // Add circles to SVG
     const dots = svg.append('g').attr('class', 'dots');
@@ -220,6 +224,13 @@ function renderScatterPlot(data, commits) {
         .append('g')
         .attr('transform', `translate(${usableArea.left}, 0)`)
         .call(yAxis);
+
+    // Update brush initialization is inside the render scatterplot function as it is part of the graph
+    // Create brush with event handlers
+    svg.call(d3.brush().on('start brush end', brushed));
+
+    // Raise dots and everything after overlay
+    svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
 // Main execution
@@ -228,6 +239,10 @@ try {
     
     if (data && data.length > 0) {
         const commits = processCommits(data);
+        // Store in window for access in event handlers
+        window.data = data;
+        window.commits = commits;
+        
         renderCommitInfo(data, commits);
         renderScatterPlot(data, commits);
         console.log('Commits:', commits);
@@ -270,3 +285,103 @@ function renderTooltipContent(commit) {
     tooltip.style.left = `${event.clientX}px`;
     tooltip.style.top = `${event.clientY}px`;
   }
+
+// BRUSHING
+  
+// Setting up the brush
+function createBrushSelector(svg) {
+    svg.call(d3.brush());
+}
+
+// Making brush to actually select dots
+function brushed(event) {
+    // console.log(event);
+    const selection = event.selection;
+    d3.selectAll('circle').classed('selected', (d) =>
+      isCommitSelected(selection, d),
+    );
+    renderSelectionCount(selection);
+    renderLanguageBreakdown(selection);
+  }
+
+
+function isCommitSelected(selection, commit) {
+    if (!selection) {
+      return false;
+    }
+    // Return true if commit is within brushSelection
+    // and false if not
+    if (!selection) { 
+        return false; } 
+    const [x0, x1] = selection.map((d) => d[0]); 
+    const [y0, y1] = selection.map((d) => d[1]); 
+    const x = xScale(commit.datetime); 
+    const y = yScale(commit.hourFrac); 
+    return x >= x0 && x <= x1 && y >= y0 && y <= y1; 
+  }
+
+  function renderSelectionCount(selection) {
+    const data = window.data; // Access global data
+    const commits = window.commits; // Access global commits
+    
+    const selectedCommits = selection
+      ? commits.filter((d) => isCommitSelected(selection, d))
+      : [];
+  
+    const countElement = document.querySelector('#selection-count');
+    countElement.textContent = `${
+      selectedCommits.length || 'No'
+    } commits selected`;
+    
+    // Render language breakdown
+    
+    // function renderLanguageBreakdown(selection, selectedCommits) {
+    const languageStats = document.getElementById('language-breakdown');
+    
+    if (!selection || selectedCommits.length === 0) {
+        languageStats.innerHTML = '';
+        return;
+    }
+    
+    // Get all the lines from selected commits
+    const selectedLines = selectedCommits.flatMap(commit => commit.lines || []);
+    
+    // Group by file extension
+    const languageGroups = d3.group(selectedLines, d => {
+        if (!d || !d.file) return 'UNKNOWN';
+        const ext = d.file.split('.').pop().toLowerCase();
+        switch(ext) {
+            case 'js': return 'JS';
+            case 'css': return 'CSS';
+            case 'html': return 'HTML';
+            default: return ext.toUpperCase();
+        }
+    });
+    
+    // Calculate totals
+    const totalLines = selectedLines.length;
+    
+    if (totalLines === 0) {
+        languageStats.innerHTML = '';
+        return;
+    }
+    
+    // Create columns layout
+    let htmlContent = '<div class="language-columns">';
+    
+    for (const [language, lines] of languageGroups) {
+        const lineCount = lines.length;
+        const percentage = ((lineCount / totalLines) * 100).toFixed(1);
+        
+        htmlContent += `
+            <div class="language-column">
+                <div class="language-title">${language}</div>
+                <div class="language-lines">${lineCount} lines</div>
+                <div class="language-percent">(${percentage}%)</div>
+            </div>
+        `;
+    }
+    
+    htmlContent += '</div>';
+    languageStats.innerHTML = htmlContent;
+}

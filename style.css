@@ -342,7 +342,6 @@ circle:hover {
 
 /*CSS for smooth transitions*/
 dl.info {
-  /* ... other styles ... */
   transition-duration: 500ms;
   transition-property: opacity, visibility;
 }
@@ -350,4 +349,67 @@ dl.info {
 dl.info[hidden]:not(:hover, :focus-within) {
   opacity: 0;
   visibility: hidden;
+}
+
+/*Styling the selection rectangle*/
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8; /* 5 + 3 */
+  }
+}
+
+.selection {
+  fill-opacity: 0.1;
+  stroke: black;
+  stroke-opacity: 0.7;
+  stroke-dasharray: 5 3;
+  animation: marching-ants 2s linear infinite;
+}
+
+/*CSS to make selected dots stand out*/
+circle.selected {
+  fill: #ff6b6b;
+}
+
+/* Language breakdown columnar styling */
+.language-columns {
+  display: flex;
+  gap: 2rem;
+  font-family: 'Courier New', monospace;
+  margin-top: 1rem;
+}
+
+.language-column {
+  text-align: center;
+}
+
+.language-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 0.5rem;
+}
+
+.language-lines {
+  margin-bottom: 0.25rem;
+}
+
+.language-percent {
+  color: #666;
+}
+
+/* Dark mode adjustment */
+@media (prefers-color-scheme: dark) {
+  .language-percent {
+      color: #aaa;
+  }
+}
+
+/* Simple language breakdown styling */
+#language-breakdown dt {
+  font-weight: bold;
+}
+
+/* Hide the language breakdown when empty */
+#language-breakdown:empty {
+  display: none;
 }
