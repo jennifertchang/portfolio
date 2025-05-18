@@ -1,5 +1,11 @@
 [
     {
+        "title": "Bike Watching 🚴‍♀️",
+        "year": "2025",
+        "image": "../images/bikewatching.png",
+        "description": "This interactive visualization maps the Bluebikes bikeshare system across Boston and Cambridge. It displays station locations, their usage levels, and bike lane networks, allowing users to explore commuter patterns and popular routes. The time filter reveals how bikeshare usage changes throughout the day, providing insights into urban mobility patterns."
+    },
+    {
         "title": "Recipe Time Estimator",
         "year": "2025",
         "image": "https://vis-society.github.io/labs/2/images/empty.svg",
@@ -22,12 +28,6 @@
         "year": "2024",
         "image": "../images/t-race.png",
         "description": "This project visualizes dinosaur data through both static and dynamic visualizations. We began by creating histograms to display the distribution of dinosaur lengths across six major geological eras. Building on this, we developed a bar chart race animation to illustrate how dinosaur fossil counts varied by location over millions of years. The project involved extensive data cleaning, exploratory data analysis, and the use of the bar_chart_race Python package to enhance temporal data storytelling through engaging visualizations."
-    },
-    {
-        "title": "Eaque incidunt repellat laboriosam.",
-        "year": "2024",
-        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "Eaque voluptatibus consectetur, voluptates quia impedit aliquid eligendi praesentium, facere nam fuga et quo odit optio sunt temporibus necessitatibus debitis, dicta deleniti atque a velit. Soluta reiciendis facilis animi unde."
     },
     {
         "title": "Eaque quasi illo adipisci.",
