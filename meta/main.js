@@ -4,6 +4,11 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 let xScale;
 let yScale;
 
+let filteredCommits = [];
+let commitMaxTime;
+let commitProgress = 100;
+let timeSlider;
+
 // Single loadData function with row conversion
 async function loadData() {
     try {
@@ -128,9 +133,9 @@ function renderCommitInfo(data, commits) {
 }
 
 // Defining renderScatterPlot function
-function renderScatterPlot(data, commits) {
+function updateScatterPlot(data, filteredCommits) {
     // Calculate range of edited lines across all commits
-    const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+    const [minLines, maxLines] = d3.extent(filteredCommits, (d) => d.totalLines);
 
     // Create scale for radius - MOVED UP BEFORE USAGE
     const rScale = d3
@@ -139,9 +144,12 @@ function renderScatterPlot(data, commits) {
         .range([2, 30]);
     
     // Sort commits by total lines in descending order (ensures large dots are rendered first and smaller dots are drawn on top)
-    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+    const sortedCommits = d3.sort(filteredCommits, (d) => -d.totalLines);
     const width = 1000;
     const height = 600;
+
+    d3.select('svg').remove(); // first clear the svg
+
     const svg = d3
         .select('#chart')
         .append('svg')
@@ -150,14 +158,17 @@ function renderScatterPlot(data, commits) {
 
     xScale = d3
         .scaleTime()
-        .domain(d3.extent(commits, (d) => d.datetime))
+        .domain(d3.extent(filteredCommits, (d) => d.datetime))
         .range([0, width])
         .nice();
       
     yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
 
+    svg.selectAll('g').remove(); // clear the scatters in order to re-draw the filtered ones
+
     // Add circles to SVG
     const dots = svg.append('g').attr('class', 'dots');
+    dots.selectAll('circle').remove();
     dots
         .selectAll('circle')
         .data(sortedCommits)
@@ -225,7 +236,6 @@ function renderScatterPlot(data, commits) {
         .attr('transform', `translate(${usableArea.left}, 0)`)
         .call(yAxis);
 
-    // Update brush initialization is inside the render scatterplot function as it is part of the graph
     // Create brush with event handlers
     svg.call(d3.brush().on('start brush end', brushed));
 
@@ -242,9 +252,15 @@ try {
         // Store in window for access in event handlers
         window.data = data;
         window.commits = commits;
+
+        // Initialize filteredCommits to all commits initially
+        filteredCommits = [...commits];
+
+        // Initialize the time slider
+        initTimeSlider();
         
         renderCommitInfo(data, commits);
-        renderScatterPlot(data, commits);
+        updateScatterPlot(data, filteredCommits);
         console.log('Commits:', commits);
     } else {
         console.error('No data loaded');
@@ -303,7 +319,7 @@ function brushed(event) {
     );
     renderSelectionCount(selection);
     renderLanguageBreakdown(selection);
-  }
+}
 
 
 function isCommitSelected(selection, commit) {
@@ -390,17 +406,17 @@ function isCommitSelected(selection, commit) {
 // SLIDER BAR IMPLEMENTATION
 
 // Represent max time we want to show as percentage of total time
-let commitProgress = 100;
+commitProgress = 100;
 
 // New Time Scale
-let timeScale = d3.scaleTime(
+timeScale = d3.scaleTime(
     [d3.min(commits, (d) => d.datetime), d3.max(commits, (d) => d.datetime)],
     [0, 100],
 );
-let commitMaxTime = timeScale.invert(commitProgress);
+commitMaxTime = timeScale.invert(commitProgress);
 
 // Time slider functionality
-const timeSlider = document.getElementById('time-slider');
+timeSlider = document.getElementById('time-slider');
 const commitTimeDisplay = document.getElementById('commit-time');
 
 // Initialize the time display
@@ -421,3 +437,44 @@ timeSlider.addEventListener('input', function() {
   }));
 });
 
+// Filter function
+function filterCommitsByTime() {
+    // Find the earliest and latest commit times
+    const [minTime, maxTime] = d3.extent(commits, d => d.datetime);
+    
+    // Calculate the cutoff time based on slider position (0-100%)
+    const timeRange = maxTime - minTime;
+    commitMaxTime = new Date(minTime.getTime() + (commitProgress / 100) * timeRange);
+    
+    // Filter commits to only include those before commitMaxTime
+    filteredCommits = commits.filter(commit => commit.datetime < commitMaxTime);
+    
+    // Update display showing current date/time
+    document.getElementById('commit-time').textContent = commitMaxTime.toLocaleString();
+}
+
+function updateTimeDisplay() {
+    // Get the current slider value
+    commitProgress = Number(timeSlider.value);
+    
+    // Filter commits by the new time
+    filterCommitsByTime();
+    
+    // Update the scatter plot with filtered data
+    updateScatterPlot(data, filteredCommits);
+}
+
+function initTimeSlider() {
+    // Get the slider element
+    timeSlider = document.getElementById('time-slider');
+    
+    // Set initial value
+    timeSlider.value = 100; // Start at 100% (show all commits)
+    
+    // Add event listener
+    timeSlider.addEventListener('input', updateTimeDisplay);
+    
+    // Initial filter and display
+    commitProgress = 100;
+    filterCommitsByTime();
+}

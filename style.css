@@ -331,9 +331,15 @@ dl.info df{
 
 /*Hover Styles on the Dots*/
 circle {
-  transition: 200ms;
+  /* transition: 200ms; */
+  transition: all 200ms, r calc(var(--r) * 100ms);
   transform-origin: center;
   transform-box: fill-box;
+
+  @starting-style {
+    r: 0;
+  }
+
 }
 
 circle:hover {
@@ -422,8 +428,10 @@ circle.selected {
 #time-slider {
     flex: 1;
     margin: 0 10px;
+    padding: 0; /* Added to make the slider able reach both ends*/
 }
 
 #commit-time {
     margin-left: auto;
 }
+
