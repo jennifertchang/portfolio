@@ -413,3 +413,17 @@ circle.selected {
 #language-breakdown:empty {
   display: none;
 }
+
+#filter-controls {
+    display: flex;
+    align-items: center;
+}
+
+#time-slider {
+    flex: 1;
+    margin: 0 10px;
+}
+
+#commit-time {
+    margin-left: auto;
+}

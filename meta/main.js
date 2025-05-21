@@ -267,7 +267,8 @@ function renderTooltipContent(commit) {
     link.href = commit.url;
     link.textContent = commit.id;
     date.textContent = commit.datetime?.toLocaleString('en', {
-      dateStyle: 'full',
+      dateStyle: 'long',
+      timeStyle: 'short',
     });
     time.textContent = commit.time;
     author.textContent = commit.author;
@@ -385,3 +386,38 @@ function isCommitSelected(selection, commit) {
     htmlContent += '</div>';
     languageStats.innerHTML = htmlContent;
 }
+
+// SLIDER BAR IMPLEMENTATION
+
+// Represent max time we want to show as percentage of total time
+let commitProgress = 100;
+
+// New Time Scale
+let timeScale = d3.scaleTime(
+    [d3.min(commits, (d) => d.datetime), d3.max(commits, (d) => d.datetime)],
+    [0, 100],
+);
+let commitMaxTime = timeScale.invert(commitProgress);
+
+// Time slider functionality
+const timeSlider = document.getElementById('time-slider');
+const commitTimeDisplay = document.getElementById('commit-time');
+
+// Initialize the time display
+commitTimeDisplay.textContent = commitMaxTime.toLocaleString({
+  dateStyle: "long",
+  timeStyle: "short"
+});
+
+// Update when slider changes
+timeSlider.addEventListener('input', function() {
+  commitProgress = parseInt(this.value);
+  
+  // Update the time display using d3 selection and timeScale
+  const selectedTime = d3.select('#commit-time');
+  selectedTime.text(timeScale.invert(commitProgress).toLocaleString({
+    dateStyle: "long",
+    timeStyle: "short"
+  }));
+});
+
