@@ -335,11 +335,9 @@ circle {
   transition: all 200ms, r calc(var(--r) * 100ms);
   transform-origin: center;
   transform-box: fill-box;
-
   @starting-style {
     r: 0;
   }
-
 }
 
 circle:hover {
@@ -422,7 +420,9 @@ circle.selected {
 
 #filter-controls {
     display: flex;
-    align-items: center;
+    flex: 1;
+    align-items: baseline;
+    margin-bottom: 20px;
 }
 
 #time-slider {

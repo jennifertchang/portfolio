@@ -4,10 +4,9 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 let xScale;
 let yScale;
 
-let filteredCommits = [];
-let commitMaxTime;
 let commitProgress = 100;
-let timeSlider;
+let timeScale;
+let commitMaxTime;
 
 // Single loadData function with row conversion
 async function loadData() {
@@ -133,9 +132,9 @@ function renderCommitInfo(data, commits) {
 }
 
 // Defining renderScatterPlot function
-function updateScatterPlot(data, filteredCommits) {
+function renderScatterPlot(data, commits) {
     // Calculate range of edited lines across all commits
-    const [minLines, maxLines] = d3.extent(filteredCommits, (d) => d.totalLines);
+    const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
 
     // Create scale for radius - MOVED UP BEFORE USAGE
     const rScale = d3
@@ -144,12 +143,9 @@ function updateScatterPlot(data, filteredCommits) {
         .range([2, 30]);
     
     // Sort commits by total lines in descending order (ensures large dots are rendered first and smaller dots are drawn on top)
-    const sortedCommits = d3.sort(filteredCommits, (d) => -d.totalLines);
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
     const width = 1000;
     const height = 600;
-
-    d3.select('svg').remove(); // first clear the svg
-
     const svg = d3
         .select('#chart')
         .append('svg')
@@ -158,17 +154,14 @@ function updateScatterPlot(data, filteredCommits) {
 
     xScale = d3
         .scaleTime()
-        .domain(d3.extent(filteredCommits, (d) => d.datetime))
+        .domain(d3.extent(commits, (d) => d.datetime))
         .range([0, width])
         .nice();
       
     yScale = d3.scaleLinear().domain([0, 24]).range([height, 0]);
 
-    svg.selectAll('g').remove(); // clear the scatters in order to re-draw the filtered ones
-
     // Add circles to SVG
     const dots = svg.append('g').attr('class', 'dots');
-    dots.selectAll('circle').remove();
     dots
         .selectAll('circle')
         .data(sortedCommits)
@@ -236,6 +229,7 @@ function updateScatterPlot(data, filteredCommits) {
         .attr('transform', `translate(${usableArea.left}, 0)`)
         .call(yAxis);
 
+    // Update brush initialization is inside the render scatterplot function as it is part of the graph
     // Create brush with event handlers
     svg.call(d3.brush().on('start brush end', brushed));
 
@@ -252,15 +246,27 @@ try {
         // Store in window for access in event handlers
         window.data = data;
         window.commits = commits;
-
-        // Initialize filteredCommits to all commits initially
-        filteredCommits = [...commits];
-
-        // Initialize the time slider
-        initTimeSlider();
         
         renderCommitInfo(data, commits);
-        updateScatterPlot(data, filteredCommits);
+        renderScatterPlot(data, commits);
+        
+        // Initialize time scale and slider after data is loaded
+        timeScale = d3
+            .scaleTime()
+            .domain([
+                d3.min(commits, (d) => d.datetime),
+                d3.max(commits, (d) => d.datetime),
+            ])
+            .range([0, 100]);
+
+        commitMaxTime = timeScale.invert(commitProgress);
+
+        // Add event listener to slider
+        document.getElementById('time-slider').addEventListener('input', onTimeSliderChange);
+
+        // Initialize the display
+        onTimeSliderChange();
+        
         console.log('Commits:', commits);
     } else {
         console.error('No data loaded');
@@ -274,7 +280,7 @@ try {
 function renderTooltipContent(commit) {
     const link = document.getElementById('commit-link');
     const date = document.getElementById('commit-date');
-    const time = document.getElementById('commit-time');
+    const time = document.getElementById('tooltip-time'); // Changed from 'commit-time'
     const author = document.getElementById('commit-author');
     const lines = document.getElementById('commit-lines');
   
@@ -283,25 +289,24 @@ function renderTooltipContent(commit) {
     link.href = commit.url;
     link.textContent = commit.id;
     date.textContent = commit.datetime?.toLocaleString('en', {
-      dateStyle: 'long',
-      timeStyle: 'short',
+      dateStyle: 'full',
     });
     time.textContent = commit.time;
     author.textContent = commit.author;
     lines.textContent = commit.totalLines;
-  }
+}
 
-  function updateTooltipVisibility(isVisible) {
+function updateTooltipVisibility(isVisible) {
     const tooltip = document.getElementById('commit-tooltip');
     tooltip.hidden = !isVisible;
-  }
+}
 
-  // Positioning the tooltip near the mouse cursor
-  function updateTooltipPosition(event) {
+// Positioning the tooltip near the mouse cursor
+function updateTooltipPosition(event) {
     const tooltip = document.getElementById('commit-tooltip');
     tooltip.style.left = `${event.clientX}px`;
     tooltip.style.top = `${event.clientY}px`;
-  }
+}
 
 // BRUSHING
   
@@ -321,7 +326,6 @@ function brushed(event) {
     renderLanguageBreakdown(selection);
 }
 
-
 function isCommitSelected(selection, commit) {
     if (!selection) {
       return false;
@@ -335,9 +339,9 @@ function isCommitSelected(selection, commit) {
     const x = xScale(commit.datetime); 
     const y = yScale(commit.hourFrac); 
     return x >= x0 && x <= x1 && y >= y0 && y <= y1; 
-  }
+}
 
-  function renderSelectionCount(selection) {
+function renderSelectionCount(selection) {
     const data = window.data; // Access global data
     const commits = window.commits; // Access global commits
     
@@ -403,78 +407,19 @@ function isCommitSelected(selection, commit) {
     languageStats.innerHTML = htmlContent;
 }
 
-// SLIDER BAR IMPLEMENTATION
+// IMPLEMENTING SLIDER
 
-// Represent max time we want to show as percentage of total time
-commitProgress = 100;
-
-// New Time Scale
-timeScale = d3.scaleTime(
-    [d3.min(commits, (d) => d.datetime), d3.max(commits, (d) => d.datetime)],
-    [0, 100],
-);
-commitMaxTime = timeScale.invert(commitProgress);
-
-// Time slider functionality
-timeSlider = document.getElementById('time-slider');
-const commitTimeDisplay = document.getElementById('commit-time');
-
-// Initialize the time display
-commitTimeDisplay.textContent = commitMaxTime.toLocaleString({
-  dateStyle: "long",
-  timeStyle: "short"
-});
-
-// Update when slider changes
-timeSlider.addEventListener('input', function() {
-  commitProgress = parseInt(this.value);
-  
-  // Update the time display using d3 selection and timeScale
-  const selectedTime = d3.select('#commit-time');
-  selectedTime.text(timeScale.invert(commitProgress).toLocaleString({
-    dateStyle: "long",
-    timeStyle: "short"
-  }));
-});
-
-// Filter function
-function filterCommitsByTime() {
-    // Find the earliest and latest commit times
-    const [minTime, maxTime] = d3.extent(commits, d => d.datetime);
+// Event Listener for Slider
+function onTimeSliderChange() {
+    // Update commitProgress to Slider Value
+    commitProgress = parseFloat(document.getElementById('time-slider').value);
     
-    // Calculate the cutoff time based on slider position (0-100%)
-    const timeRange = maxTime - minTime;
-    commitMaxTime = new Date(minTime.getTime() + (commitProgress / 100) * timeRange);
+    // Update commitMaxTime using timeScale.invert
+    commitMaxTime = timeScale.invert(commitProgress);
     
-    // Filter commits to only include those before commitMaxTime
-    filteredCommits = commits.filter(commit => commit.datetime < commitMaxTime);
-    
-    // Update display showing current date/time
-    document.getElementById('commit-time').textContent = commitMaxTime.toLocaleString();
-}
-
-function updateTimeDisplay() {
-    // Get the current slider value
-    commitProgress = Number(timeSlider.value);
-    
-    // Filter commits by the new time
-    filterCommitsByTime();
-    
-    // Update the scatter plot with filtered data
-    updateScatterPlot(data, filteredCommits);
-}
-
-function initTimeSlider() {
-    // Get the slider element
-    timeSlider = document.getElementById('time-slider');
-    
-    // Set initial value
-    timeSlider.value = 100; // Start at 100% (show all commits)
-    
-    // Add event listener
-    timeSlider.addEventListener('input', updateTimeDisplay);
-    
-    // Initial filter and display
-    commitProgress = 100;
-    filterCommitsByTime();
+    // Update <Time> Element to display commit time
+    document.getElementById('commit-time').textContent = commitMaxTime.toLocaleString('en', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+    });
 }
