@@ -156,8 +156,14 @@ function updateFilesDisplay() {
         );
 
     // This code updates the div info
-    filesContainer.select('dt > code').text((d) => d.name);
-    filesContainer.select('dd').text((d) => `${d.lines.length} lines`);
+    filesContainer.select('dt > code').html((d) => `${d.name}<small style="display: block; font-size: 0.8em; opacity: 0.7;">${d.lines.length} lines</small>`);
+    // append one div for each line
+    filesContainer
+        .select('dd')
+        .selectAll('div')
+        .data((d) => d.lines)
+        .join('div')
+        .attr('class', 'loc');
 }
 
 // Defining renderScatterPlot function
