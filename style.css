@@ -455,11 +455,12 @@ circle.selected {
 }
 /*Unit Visualization*/
 .loc {
-  display: flex;
-  width: 0.5em;
-  aspect-ratio: 1;
-  background: steelblue;
-  border-radius: 50%;
+    background: var(--color); /*CSS for dot unit visualization elements (changing color)*/
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 1px;
 }
 
 /* CSS for the <dd> elements */

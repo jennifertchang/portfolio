@@ -135,11 +135,14 @@ function renderCommitInfo(data, commits) {
 // Function to update files display
 function updateFilesDisplay() {
     let lines = filteredCommits.flatMap((d) => d.lines);
+    let colors = d3.scaleOrdinal(d3.schemeTableau10);
     let files = d3
       .groups(lines, (d) => d.file)
       .map(([name, lines]) => {
         return { name, lines };
-      });
+      })
+      // Sort files by number of lines in descending order
+      .sort((a, b) => b.lines.length - a.lines.length); 
 
     // D3 Create the HTML we want
     let filesContainer = d3
@@ -163,7 +166,8 @@ function updateFilesDisplay() {
         .selectAll('div')
         .data((d) => d.lines)
         .join('div')
-        .attr('class', 'loc');
+        .attr('class', 'loc')
+        .attr('style', (d) => `--color: ${colors(d.type)}`);
 }
 
 // Defining renderScatterPlot function
