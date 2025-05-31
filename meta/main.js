@@ -1,4 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
 
 // Declaring global variables and update these values inside renderScatterPlot
 let xScale;
@@ -29,9 +30,9 @@ async function loadData() {
     }
 }
 
-// Process commits function
+// Process commits function - FIXED: Added sorting by datetime
 function processCommits(data) {
-    return d3
+    const commits = d3
         .groups(data, (d) => d.commit)
         .map(([commit, lines]) => {
             let first = lines[0];
@@ -57,7 +58,11 @@ function processCommits(data) {
             });
             
             return ret;
-        });
+        })
+        // FIXED: Sort commits by datetime to ensure proper order
+        .sort((a, b) => a.datetime - b.datetime);
+    
+    return commits;
 }
 
 function renderCommitInfo(data, commits) {
@@ -278,6 +283,32 @@ function renderScatterPlot(data, commits) {
     svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
+// FIXED: Helper function to update scatter plot based on a target datetime
+function updateScatterPlotToDatetime(targetDatetime) {
+    // Update the slider to match this datetime
+    const newProgress = timeScale(targetDatetime);
+    document.getElementById('time-slider').value = newProgress;
+    
+    // Update the global variables
+    commitProgress = newProgress;
+    commitMaxTime = targetDatetime;
+    
+    // Update the time display
+    document.getElementById('commit-time').textContent = commitMaxTime.toLocaleString('en', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+    });
+
+    // Filter commits and update visualization
+    filteredCommits = window.commits.filter((d) => d.datetime <= commitMaxTime);
+    updateScatterPlot(window.data, filteredCommits);
+    
+    // Update files display if #files element exists
+    if (document.getElementById('files')) {
+        updateFilesDisplay();
+    }
+}
+
 // Main execution
 try {
     const data = await loadData();
@@ -309,6 +340,41 @@ try {
 
         // Initialize the display
         onTimeSliderChange();
+        
+        // FIXED: Generate commit text after we have the commits data
+        d3.select('#scatter-story')
+          .selectAll('.step')
+          .data(commits)
+          .join('div')
+          .attr('class', 'step')
+          .html(
+            (d, i) => `
+                On ${d.datetime.toLocaleString('en', {
+                  dateStyle: 'full',
+                  timeStyle: 'short',
+                })},
+                I made <a href="${d.url}" target="_blank">${
+                  i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+                }</a>.
+                I edited ${d.totalLines} lines across ${
+                  d3.rollups(
+                    d.lines,
+                    (D) => D.length,
+                    (d) => d.file,
+                  ).length
+                } files.
+                Then I looked over all I had made, and I saw that it was very good.
+            `,
+          );
+
+        // FIXED: Set up scrollama after generating the steps
+        const scroller = scrollama();
+        scroller
+          .setup({
+            container: '#scrolly-1',
+            step: '#scrolly-1 .step',
+          })
+          .onStepEnter(onStepEnter);
         
         console.log('Commits:', commits);
     } else {
@@ -525,4 +591,13 @@ function updateScatterPlot(data, commits) {
       d3.select(event.currentTarget).style('fill-opacity', 0.7);
       updateTooltipVisibility(false);
     });
+}
+
+// Scrollytelling function that actually updates the visualization
+function onStepEnter(response) {
+  const commitDatetime = response.element.__data__.datetime;
+  console.log('Scrolled to commit:', commitDatetime);
+  
+  // Update the scatter plot to show commits up to this point
+  updateScatterPlotToDatetime(commitDatetime);
 }
